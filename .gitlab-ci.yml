@@ -49,5 +49,5 @@ build:
     - .go_before_script
   stage: build
   script:
-    - make
+    - make build
     - ls
