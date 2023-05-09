@@ -13,6 +13,4 @@ EXPOSE 9000
 
 ENV PATH=$PATH:/server/bin
 
-#ENTRYPOINT ["protocol-verifier-http-server"]
-ENTRYPOINT ["ls"]
-CMD ["templates"]
+ENTRYPOINT ["protocol-verifier-http-server"]
