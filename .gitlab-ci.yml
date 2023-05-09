@@ -26,16 +26,19 @@ sast:
   - make dep
 
 # unit_tests:
+#   image: golang:${GL_GOLANG_VERSION}
 #   stage: test
 #   script:
 #     - make test
 
 lint_code:
+  image: golang:${GL_GOLANG_VERSION}
   stage: test
   script:
     - make lint
 
 build:
+  image: golang:${GL_GOLANG_VERSION}
   stage: build
   script:
     - make
