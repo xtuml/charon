@@ -27,18 +27,24 @@ sast:
 
 # unit_tests:
 #   image: golang:${GL_GOLANG_VERSION}
+#   extends:
+#     - .go_before_script
 #   stage: test
 #   script:
 #     - make test
 
 lint_code:
   image: golang:${GL_GOLANG_VERSION}
+  extends:
+    - .go_before_script
   stage: test
   script:
     - make lint
 
 build:
   image: golang:${GL_GOLANG_VERSION}
+  extends:
+    - .go_before_script
   stage: build
   script:
     - make
