@@ -1,5 +1,5 @@
 PROJECT_NAME := "protocol-verifier-http-server"
-PKG := gitlab.com/smartdcs1/cdsdt/$(PROJECT_NAME)
+PKG := gitlab.com/smartdcs1/cdsdt/protocol-verifier-http-server
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 
