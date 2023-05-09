@@ -40,6 +40,7 @@ lint_code:
     - .go_before_script
   stage: test
   script:
+    - go get -u golang.org/x/lint/golint
     - make lint
 
 build:
