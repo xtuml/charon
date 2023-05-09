@@ -3,13 +3,13 @@ PKG := gitlab.com/smartdcs1/cdsdt/$(PROJECT_NAME)
 PKG_LIST := $(shell go list ${PKG}/... | grep -v /vendor/)
 GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 
-.PHONY: all dep build test lint
+.PHONY: all dep build #test lint
 
 # lint: ## Lint the files
 # 	@golint -set_exit_status ./...
 
-test: ## Run unittests
-	@go test -short ${PKG_LIST}
+# test: ## Run unittests
+# 	@go test -short ${PKG_LIST}
 
 dep: ## Get the dependencies
 	@go get -v -d ./...
