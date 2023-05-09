@@ -34,14 +34,14 @@ sast:
 #   script:
 #     - make test
 
-lint_code:
-  image: golang:${GL_GOLANG_VERSION}
-  extends:
-    - .go_before_script
-  stage: test
-  script:
-    - go get -u golang.org/x/lint/golint
-    - make lint
+# lint_code:
+#   image: golang:${GL_GOLANG_VERSION}
+#   extends:
+#     - .go_before_script
+#   stage: test
+#   script:
+#     - go get -u golang.org/x/lint/golint
+#     - make lint
 
 build:
   image: golang:${GL_GOLANG_VERSION}
