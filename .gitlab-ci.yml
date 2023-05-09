@@ -23,7 +23,7 @@ sast:
   before_script:
     - mkdir -p /go/src/gitlab.com/${CI_PROJECT_PATH} /go/src/_/builds
     - cp -r $CI_PROJECT_DIR /go/src/gitlab.com/CI_PROJECT_PATH
-    - ln -s /go/src/gitlab.com/${CI_PROJECT_PATH} /go/src/_/builds/${CI_PROJECT_NAME	}
+    - ln -s /go/src/gitlab.com/${CI_PROJECT_PATH} /go/src/_/builds/${CI_PROJECT_NAME}
     - make dep
 
 # unit_tests:
