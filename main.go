@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -8,9 +9,16 @@ import (
 )
 
 func main() {
+	// Define runtime flags
+	dataPath := flag.String("path", "/data", "File storage directory")
+
+	// Parse flags
+	flag.Parse()
+
+	// Setup gin router
 	router := gin.Default()
 
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob("./templates/*")
 	router.MaxMultipartMemory = 8 << 20 // 8MiB
 
 	// Health Check.
@@ -20,17 +28,20 @@ func main() {
 
 	// Upload AEReception configuration file.
 	router.POST("/upload/aer-config", func(ctx *gin.Context) {
-		uploads.SingleUpload("data/aerconfig/", ctx)
+		path := *dataPath + "/aerconfig/"
+		uploads.SingleUpload(path, ctx)
 	})
 
 	// Upload AEO_SVDC configuration file.
 	router.POST("/upload/aeo-svdc-config", func(ctx *gin.Context) {
-		uploads.MultiUpload("data/aeo_svdc_config/", ctx)
+		path := *dataPath + "/aeo_svdc_config/"
+		uploads.MultiUpload(path, ctx)
 	})
 
 	// Upload Events
 	router.POST("/upload/events", func(ctx *gin.Context) {
-		uploads.MultiUpload("data/events/", ctx)
+		path := *dataPath + "/events/"
+		uploads.MultiUpload(path, ctx)
 	})
 
 	// Route to web page.
