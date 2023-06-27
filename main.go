@@ -6,12 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/smartdcs1/cdsdt/protocol-verifier-http-server/uploads"
+	"gitlab.com/smartdcs1/cdsdt/protocol-verifier-http-server/downloads"
 )
 
 func main() {
 	// Define runtime flags
 	dataPath := flag.String("path", "/data", "File storage directory")
-
 	// Parse flags
 	flag.Parse()
 
@@ -48,6 +48,18 @@ func main() {
 	router.GET("/", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "index.html", nil)
 	})
+
+	// Get verifier logs
+	router.GET(
+		"/download/verifierlog",
+		func(ctx *gin.Context) {
+			path := *dataPath + "/logs/verifier/Verifier.log"
+			downloads.GetFileRequest(
+				path,
+				ctx,
+			)
+		},
+	)
 
 	router.Run(":9000")
 }
