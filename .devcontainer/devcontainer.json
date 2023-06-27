@@ -13,7 +13,7 @@
 			"yqVersion": "latest",
 			"gojqVersion": "latest"
 		}
-	}
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -22,8 +22,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
-
+	"postCreateCommand": "sudo mkdir /data;sudo chmod a+rw /data; cp -r ${containerWorkspaceFolder}/data/* /data/."
 	// Configure tool-specific properties.
 	// "customizations": {},
 
