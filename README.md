@@ -35,14 +35,27 @@ curl --location --request POST '127.0.0.1:9000/upload/aer-config' \
 
 This path allows you to upload multiple files following the Protocol Verifiers guide to setting AEO_SVDC configuration.
 
-Typically this will require a `config.json` and job definition json files.
+Typically this will require a `config.json`.
 
 Example curl
 ```bash
 curl --location --request POST '127.0.0.1:9000/upload/aeo-svdc-config' \
---form 'upload=@"/Users/tomgibbs/testFiles/aeo_svdc/config/config.json"' \
---form 'upload=@"/Users/testFiles/aeo_svdc/config/FileRequest.json"' \
---form 'upload=@"/Users/tomgibbs/testFiles/aeo_svdc/config/FileRequest_event_data.json"'
+--form 'upload=@"/Users/tomgibbs/testFiles/aeo_svdc/config/config.json"'
+```
+
+#### /upload/job-definitions
+
+- Multi file upload
+
+This path allows you to upload multiple files following the Protocol Verifiers guide to setting job definitions.
+
+Typically this will require job definition json files.
+
+Example curl
+```bash
+curl --location --request POST '127.0.0.1:9000/upload/aeo-svdc-config' \
+--form 'upload=@"./FileRequest.json"' \
+--form 'upload=@"./ANDFork_ANDFork_a.json"'
 ```
 
 #### /upload/events
