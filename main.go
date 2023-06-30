@@ -38,6 +38,12 @@ func main() {
 		uploads.MultiUpload(path, ctx)
 	})
 
+	// Upload job definition file
+	router.POST("/upload/job-definitions", func(ctx *gin.Context) {
+		path := *dataPath + "/aeo_svdc_config/job_defintions/"
+		uploads.MultiUpload(path, ctx)
+	})
+
 	// Upload Events
 	router.POST("/upload/events", func(ctx *gin.Context) {
 		path := *dataPath + "/events/"
