@@ -40,7 +40,7 @@ func main() {
 
 	// Upload job definition file
 	router.POST("/upload/job-definitions", func(ctx *gin.Context) {
-		path := *dataPath + "/aeo_svdc_config/job_defintions/"
+		path := *dataPath + "/aeo_svdc_config/job_definitions/"
 		uploads.MultiUpload(path, ctx)
 	})
 
@@ -56,16 +56,30 @@ func main() {
 	})
 
 	// Get verifier logs
-	router.GET(
+	router.POST(
 		"/download/verifierlog",
 		func(ctx *gin.Context) {
-			path := *dataPath + "/logs/verifier/Verifier.log"
-			downloads.GetFileRequest(
+			path := *dataPath + "/logs/verifier/"
+			downloads.PostFileRequest(
 				path,
 				ctx,
 			)
 		},
 	)
+
+	// Get all log filenames
+	router.GET(
+		"/download/verifier-log-file-names",
+		func(ctx *gin.Context) {
+			path := *dataPath + "/logs/verifier"
+			downloads.GetFileNames(
+				path,
+				"Verifier",
+				ctx,
+			)
+		},
+	)
+
 
 	router.Run(":9000")
 }
