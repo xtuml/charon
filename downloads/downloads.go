@@ -45,7 +45,7 @@ func GetFileNames(
 	for _, fileNameObj := range fileNamesObjs {
 		fileName := fileNameObj.Name()
 		// Filter out filenames that do not contain the given substring
-		if strings.Contains(fileName, fileSubString) {
+		if strings.HasPrefix(fileName, fileSubString) {
 			fileNames = append(fileNames, fileName)
 		}
 	}
