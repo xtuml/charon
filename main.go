@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gitlab.com/smartdcs1/cdsdt/protocol-verifier-http-server/uploads"
 	"gitlab.com/smartdcs1/cdsdt/protocol-verifier-http-server/downloads"
+	"gitlab.com/smartdcs1/cdsdt/protocol-verifier-http-server/ioTracking"
 )
 
 func main() {
@@ -75,6 +76,30 @@ func main() {
 			downloads.GetFileNames(
 				path,
 				"Verifier",
+				ctx,
+			)
+		},
+	)
+
+	// Get number of files in aer-incoming
+	router.GET(
+		"/ioTracking/aer-incoming",
+		func(ctx *gin.Context) {
+			path := *dataPath + "/events/"
+			ioTracking.GetNumFiles(
+				path,
+				ctx,
+			)
+		},
+	)
+	
+	// Get number of files in verifier-processed
+	router.GET(
+		"/ioTracking/verifier-processed",
+		func(ctx *gin.Context) {
+			path := *dataPath + "/verifier_processed"
+			ioTracking.GetNumFiles(
+				path,
 				ctx,
 			)
 		},
