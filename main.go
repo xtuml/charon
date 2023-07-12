@@ -80,6 +80,31 @@ func main() {
 			)
 		},
 	)
+	
+	// Get aer logs
+	router.POST(
+		"/download/aerlog",
+		func(ctx *gin.Context) {
+			path := *dataPath + "/logs/reception/"
+			downloads.PostFileRequest(
+				path,
+				ctx,
+			)
+		},
+	)
+
+	// Get aer log filenames
+	router.GET(
+		"/download/aer-log-file-names",
+		func(ctx *gin.Context) {
+			path := *dataPath + "/logs/reception"
+			downloads.GetFileNames(
+				path,
+				"Reception",
+				ctx,
+			)
+		},
+	)
 
 	// Get number of files in aer-incoming
 	router.GET(
