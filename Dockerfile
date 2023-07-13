@@ -1,7 +1,7 @@
 FROM ubuntu:latest
 
 RUN mkdir -p /server/{bin,templates}
-RUN mkdir -p /data/{aeo_svdc_config/job_definitions,aerconfig,events,logs/verifier,logs/reception}
+RUN mkdir -p /data/{aeo_svdc_config/job_definitions,aerconfig,events,logs/verifier,logs/reception,verifier_processed}
 
 WORKDIR /server
 
