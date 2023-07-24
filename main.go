@@ -130,6 +130,31 @@ func main() {
 		},
 	)
 
+	// Endpoint to clean up protocol verifier folders
+	router.GET(
+		"io/cleanup-test",
+		func (ctx *gin.Context)  {
+			dirPaths := []string {
+				*dataPath + "/aeo_svdc_config/job_definitions",
+				*dataPath + "/aerconfig",
+				*dataPath + "/events",
+				*dataPath + "/logs/reception",
+				*dataPath + "/logs/verifier",
+				*dataPath + "/verifier_processed",
+			}
+			suffixes := []string {
+				".log",
+				".gz",
+				".json",
+			}
+			ioTracking.CleanFolders(
+				dirPaths,
+				suffixes,
+				ctx,
+			)	
+		},
+	)
+
 
 	router.Run(":9000")
 }
