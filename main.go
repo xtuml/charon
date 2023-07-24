@@ -140,11 +140,12 @@ func main() {
 				*dataPath + "/logs/reception",
 				*dataPath + "/logs/verifier",
 				*dataPath + "/verifier_processed",
+				*dataPath + "/verifier_incoming",
+				*dataPath + "/invariant_store",
+				*dataPath + "/job_id_store",
 			}
 			suffixes := []string {
-				".log",
-				".gz",
-				".json",
+				"",
 			}
 			ioTracking.CleanFolders(
 				dirPaths,

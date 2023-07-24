@@ -5,6 +5,7 @@ import (
 	"time"
 	"net/http"
 	"path/filepath"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -38,7 +39,7 @@ func CleanFolders(
 	for _, dirPath := range dirPaths {
 		for _, suffix := range suffixes {
 			dirPathSuffix := dirPath + "/*" + suffix
-			fileNames, err := filepath.Glob(
+			filePaths, err := filepath.Glob(
 				dirPathSuffix,
 			)
 			if err != nil {
@@ -46,12 +47,14 @@ func CleanFolders(
 				return
 
 			}
-			for _, fileName := range fileNames {
-				filePath := fileName
-				err := os.Remove(filePath)
-				if err != nil {
-					ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
-					return
+			for _, filePath := range filePaths {
+				_, fileName := filepath.Split(filePath)
+				if !strings.HasPrefix(fileName, ".") {
+					err := os.Remove(filePath)
+					if err != nil {
+						ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
+						return
+					}
 				}
 			}
 		}
