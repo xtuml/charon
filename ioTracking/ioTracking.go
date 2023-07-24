@@ -4,6 +4,7 @@ import (
 	"os"
 	"time"
 	"net/http"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,4 +26,35 @@ func GetNumFiles(
 		"t": t,
 	}
 	ctx.JSON(200, jsonResponse) 
+}
+
+func CleanFolders(
+	dirPaths []string,
+	suffixes []string,
+	ctx *gin.Context,
+) {
+	// Clean given folders of files with given suffix
+
+	for _, dirPath := range dirPaths {
+		for _, suffix := range suffixes {
+			dirPathSuffix := dirPath + "/*" + suffix
+			fileNames, err := filepath.Glob(
+				dirPathSuffix,
+			)
+			if err != nil {
+				ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
+				return
+
+			}
+			for _, fileName := range fileNames {
+				filePath := fileName
+				err := os.Remove(filePath)
+				if err != nil {
+					ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
+					return
+				}
+			}
+		}
+	}
+	ctx.String(http.StatusOK, "Folders Cleaned Successfully")
 }
