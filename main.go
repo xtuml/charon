@@ -136,7 +136,6 @@ func main() {
 		func (ctx *gin.Context)  {
 			dirPaths := []string {
 				*dataPath + "/aeo_svdc_config/job_definitions",
-				*dataPath + "/aerconfig",
 				*dataPath + "/events",
 				*dataPath + "/logs/reception",
 				*dataPath + "/logs/verifier",
