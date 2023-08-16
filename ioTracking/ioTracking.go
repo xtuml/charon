@@ -11,17 +11,17 @@ import (
 )
 
 func GetNumFiles(
-	dirPath string,
+	dir *os.File,
 	ctx *gin.Context) {
 	// Check number of files in directory
 	// and send as json response with unix time
-	t := time.Now().Unix()
-	fileNamesObjs, err := os.ReadDir(dirPath)
+	fileNamesObjs, err := dir.Readdirnames(0)
 	if err != nil {
 		ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
 		return
 	}
 	num_files := len(fileNamesObjs)
+	t := time.Now().Unix()
 	jsonResponse := gin.H{
 		"num_files": num_files,
 		"t": t,
