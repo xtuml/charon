@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"flag"
 	"net/http"
 
@@ -111,8 +112,12 @@ func main() {
 		"/ioTracking/aer-incoming",
 		func(ctx *gin.Context) {
 			path := *dataPath + "/events/"
+			dir, err := os.Open(path)
+			if err != nil {
+				ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
+			}
 			ioTracking.GetNumFiles(
-				path,
+				dir,
 				ctx,
 			)
 		},
@@ -123,8 +128,12 @@ func main() {
 		"/ioTracking/verifier-processed",
 		func(ctx *gin.Context) {
 			path := *dataPath + "/verifier_processed"
+			dir, err := os.Open(path)
+			if err != nil {
+				ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
+			}
 			ioTracking.GetNumFiles(
-				path,
+				dir,
 				ctx,
 			)
 		},
