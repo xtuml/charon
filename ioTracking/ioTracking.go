@@ -32,8 +32,7 @@ func GetNumFiles(
 func CleanFolders(
 	dirPaths []string,
 	suffixes []string,
-	ctx *gin.Context,
-) {
+) error {
 	// Clean given folders of files with given suffix
 
 	for _, dirPath := range dirPaths {
@@ -43,21 +42,72 @@ func CleanFolders(
 				dirPathSuffix,
 			)
 			if err != nil {
-				ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
-				return
+				return err
 
 			}
 			for _, filePath := range filePaths {
 				_, fileName := filepath.Split(filePath)
 				if !strings.HasPrefix(fileName, ".") {
-					err := os.Remove(filePath)
+					err := os.RemoveAll(filePath)
 					if err != nil {
-						ctx.String(http.StatusInternalServerError, "Request error: %s", err.Error())
-						return
+						return err
 					}
 				}
 			}
 		}
+	}
+	return nil
+}
+
+type RestartPVStruct struct {
+	WaitTime int64 `json:"wait_time"`
+}
+
+func CleanWaitCleanWait(
+	dirPaths []string,
+	suffixes []string,
+	waitTime int64,
+) error {
+	// Function clean folders wait for a timeout and the clean and wait again
+	err := CleanFolders(
+		dirPaths,
+		suffixes,
+	)
+	if err != nil {
+		return err
+	}
+	time.Sleep(time.Duration(waitTime) * time.Second)
+	err = CleanFolders(
+		dirPaths,
+		suffixes,
+	)
+	if err != nil {
+		return err
+	}
+	time.Sleep(time.Duration(waitTime) * time.Second)
+	return nil
+}
+
+func RestartPV(
+	dirPaths []string,
+	suffixes []string,
+	ctx *gin.Context,
+) {
+	// Function to restart the Protocol Verifier
+	var waitTimeObj RestartPVStruct
+
+	// Bind the JSON Data to the fileRequest structure
+	err := ctx.BindJSON(&waitTimeObj)
+	if err != nil {
+		ctx.String(http.StatusBadRequest, "Request error: %s", err.Error())
+	}
+	err = CleanWaitCleanWait(
+		dirPaths,
+		suffixes,
+		waitTimeObj.WaitTime,
+	)
+	if err != nil {
+		ctx.String(http.StatusBadRequest, "Request error: %s", err.Error())
 	}
 	ctx.String(http.StatusOK, "Folders Cleaned Successfully")
 }
