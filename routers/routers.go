@@ -60,7 +60,7 @@ func SetupRouter(
 	router.POST(
 		"/download/verifierlog",
 		func(ctx *gin.Context) {
-			path := dataPathString + "/logs/verifier/"
+			path := dataPathString + "/logs/verifier"
 			downloads.PostFileRequest(
 				path,
 				ctx,
@@ -85,7 +85,7 @@ func SetupRouter(
 	router.POST(
 		"/download/aerlog",
 		func(ctx *gin.Context) {
-			path := dataPathString + "/logs/reception/"
+			path := dataPathString + "/logs/reception"
 			downloads.PostFileRequest(
 				path,
 				ctx,
@@ -101,6 +101,27 @@ func SetupRouter(
 			downloads.GetFileNames(
 				path,
 				"Reception",
+				ctx,
+			)
+		},
+	)
+
+	// POST request getting log files from specific locations
+	router.POST(
+		"/download/log-file-names",
+		func(ctx *gin.Context) {
+			downloads.HandleGetLogFileNames(
+				dataPathString,
+				ctx,
+			)
+		},
+	)
+	// Get log file
+	router.POST(
+		"/download/log-file",
+		func(ctx *gin.Context) {
+			downloads.HandleDownloadLogFile(
+				dataPathString,
 				ctx,
 			)
 		},
