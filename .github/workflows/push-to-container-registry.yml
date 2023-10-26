@@ -1,0 +1,33 @@
+name: Push to Container Registry
+
+on:
+    push:
+        branches:
+            - CDSTH-340-create-automatic-images-built-on-http-server-when-pushed-to-main
+
+env:
+    IMAGE_NAME: protocol-verifier-http-server
+    DOCKERFILE_PATH: ./Dockerfile
+
+jobs:
+    build-and-push:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Login to GitHub Container Registry
+              uses: docker/login-action@v1
+              with:
+                  registry: ghcr.io
+                  username: ${{ github.actor }}
+                  password: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v2
+              with:
+                  context: .
+                  file: ${{ env.DOCKERFILE_PATH }}
+                  push: true
+                  # tags: ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+                  tags: ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:latest
