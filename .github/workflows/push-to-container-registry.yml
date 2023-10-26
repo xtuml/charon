@@ -3,7 +3,7 @@ name: Push to Container Registry
 on:
     push:
         branches:
-            - CDSTH-340-create-automatic-images-built-on-http-server-when-pushed-to-main
+            - main
 
 env:
     IMAGE_NAME: protocol-verifier-http-server
