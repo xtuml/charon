@@ -23,6 +23,9 @@ jobs:
                   username: ${{ github.actor }}
                   password: ${{ secrets.GITHUB_TOKEN }}
 
+            - name: Set lowercase image name
+              run: echo "repository_lowercase=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
             - name: Build and push Docker image
               uses: docker/build-push-action@v2
               with:
@@ -30,4 +33,4 @@ jobs:
                   file: ${{ env.DOCKERFILE_PATH }}
                   push: true
                   # tags: ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-                  tags: ghcr.io/${{ github.repository }}/${{ env.IMAGE_NAME }}:latest
+                  tags: ghcr.io/${{ env.repository_lowercase }}:latest
