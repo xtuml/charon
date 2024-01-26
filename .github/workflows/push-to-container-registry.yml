@@ -4,7 +4,6 @@ on:
     push:
         branches:
             - main
-            - CDSTH-530-Update-git-workflow-to-build-HTTP-server-on-tag-of-version
         tags:
           - 'v*'
 
