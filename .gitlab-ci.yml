@@ -1,0 +1,74 @@
+variables:
+  GL_GOLANG_VERSION: 1.20.4
+
+cache:
+  paths:
+    - /apt-cache
+    - /go/src/github.com
+    - /go/src/golang.org
+    - /go/src/google.golang.org
+    - /go/src/gopkg.in
+
+stages:
+- test
+- build
+- push
+
+include:
+- template: Security/SAST.gitlab-ci.yml
+
+sast:
+  stage: test
+
+.go_before_script:
+  before_script:
+    - mkdir -p /go/src/gitlab.com/${CI_PROJECT_PATH} /go/src/_/builds
+    - cp -r $CI_PROJECT_DIR /go/src/gitlab.com/CI_PROJECT_PATH
+    - ln -s /go/src/gitlab.com/${CI_PROJECT_PATH} /go/src/_/builds/${CI_PROJECT_NAME}
+    - make dep
+
+# unit_tests:
+#   image: golang:${GL_GOLANG_VERSION}
+#   extends:
+#     - .go_before_script
+#   stage: test
+#   script:
+#     - make test
+
+# lint_code:
+#   image: golang:${GL_GOLANG_VERSION}
+#   extends:
+#     - .go_before_script
+#   stage: test
+#   script:
+#     - go get -u golang.org/x/lint/golint
+#     - make lint
+
+build:
+  image: golang:${GL_GOLANG_VERSION}
+  extends:
+    - .go_before_script
+  stage: build
+  script:
+    - make build
+    - ls
+  artifacts:
+    when: on_success
+    paths:
+      - protocol-verifier-http-server
+    expire_in: "1 days"
+  rules:
+    - if: $CI_COMMIT_TAG
+
+push:
+  stage: push
+  image:
+    name: gcr.io/kaniko-project/executor:v1.9.0-debug
+    entrypoint: [""]
+  script:
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
+  rules:
+    - if: $CI_COMMIT_TAG
